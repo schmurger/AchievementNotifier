@@ -107,7 +107,7 @@ namespace AchievementNotifier.Parsers
                     if (parser != null)
                     {
                         detectedGames.Add(processFileName, parser);
-                        new FileWatcher(parser);
+                        Task.Run(() => new FileWatcher(parser).Start());
                     }
                 }
             }

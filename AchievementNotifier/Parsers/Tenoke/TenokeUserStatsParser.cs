@@ -16,7 +16,7 @@ namespace AchievementNotifier.Parsers.Tenoke
         private static Regex achievedPattern = new Regex(@"\[ACHIEVEMENTS\]");
         private static Regex achStatPattern = new Regex(@"""(.*)_Stat""\s+=\s+(.*)");
         private static Regex achievementStatLine = new Regex(@"""(.*)""\s*=\s*{unlocked\s*=\s*([a-z]+)\s*,\s*time\s*=\s*([0-9]+)", RegexOptions.IgnoreCase);
-        private static int unlockTimeTolerance = 1000;
+        private static int unlockTimeSecondsTolerance = 5;
         protected static String statsFilePattern = @"SteamData\user_stats.ini";
 
         protected String userStatsFile;
@@ -94,7 +94,7 @@ namespace AchievementNotifier.Parsers.Tenoke
                         long diffTime = Math.Abs(timeNow - achievedTime);
 
                         Debug.WriteLine($"{id}, Unlocked = {unlocked}, diffTime = {diffTime}");
-                        if (unlocked && diffTime < unlockTimeTolerance)
+                        if (unlocked && diffTime < unlockTimeSecondsTolerance)
                         {
                             Achievement achievement = achievements.GetValueOrDefault(id);
                             achievement.timestamp = achievedTime;

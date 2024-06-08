@@ -62,20 +62,31 @@ namespace AchievementNotifier
         {
             if (!Storage.ContainsKey(id)) return;
 
-            AchievementItem achievementItem = Storage.GetValueOrDefault(id).achievementItems.Find(a => a.id == achievement.id);
-
-            if (achievement.progressMax > 0 && achievement.progressMin > 0)
+            AchievementItem achievementItemInView = GameAchievements.FirstOrDefault(a => a.id == achievement.id);
+            if (achievementItemInView != null)
             {
-                achievementItem.percentage = (int)(achievement.progressMax / achievement.progressMin * 100);
-                achievementItem.percentageText = $"{achievementItem.percentage}%";
-                achievementItem.progress = $"{(int)achievement.progressMin}/{(int)achievement.progressMax}";
-                achievementItem.progressVisible = true;
+                achievementItemInView.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
             }
 
-            if (achievement.achieved)
+            AchievementItem achievementItem = Storage.GetValueOrDefault(id).achievementItems.FirstOrDefault(a => a.id == achievement.id);
+
+            if (achievementItem != null)
             {
-                achievementItem.icon = achievement.icon;
-                achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
+                if (achievement.progressMax > 0 && achievement.progressMin > 0)
+                {
+                    achievementItem.percentage = (int)(achievement.progressMax / achievement.progressMin * 100);
+                    achievementItem.percentageText = $"{achievementItem.percentage}%";
+                    achievementItem.progress = $"{(int)achievement.progressMin}/{(int)achievement.progressMax}";
+                    achievementItem.progressVisible = true;
+                }
+
+                if (achievement.achieved)
+                {
+                    achievementItem.icon = achievement.icon;
+                    achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
+                }
+
+                
             }
         }
 

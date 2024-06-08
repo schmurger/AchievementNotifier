@@ -19,30 +19,41 @@ namespace AchievementNotifier
     {
         private AchievementParser parser;
         private FileSystemWatcher watcher;
-
+        private BlockingCollection<string> queue;
+        private long lastWriteTime = 0;
+        private long writeInterval = 500;
+        
         public FileWatcher(AchievementParser AchievementParser)
         {
             parser = AchievementParser;
-            watcher = new FileSystemWatcher();
-           
+            queue = new BlockingCollection<string>();   
+
             String monitorFile = parser.GetStatsFile(); 
             String watchDirectory = System.IO.Path.GetDirectoryName(monitorFile);
             String watchFile = System.IO.Path.GetFileName(monitorFile);
 
-            watcher.Path = watchDirectory;
-            watcher.Filter = watchFile;
+            watcher = new FileSystemWatcher(watchDirectory, watchFile);
             watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.Size | NotifyFilters.LastWrite;
-            watcher.Changed += new FileSystemEventHandler(this.OnChanged);
-
-
-            Console.WriteLine($"Watching {watcher.Path}\\{watcher.Filter}");
-            watcher.EnableRaisingEvents = true;
+            watcher.Changed += (_, e) => queue.Add(e.FullPath);
+            watcher.Created += (_, e) => queue.Add(e.FullPath);
         }
 
-        private void OnChanged(object source, FileSystemEventArgs e)
+        public void Start()
         {
-            Debug.WriteLine($"Detected change {e.FullPath}");
-            parser.DetectUnlockedAchievements(e.FullPath);
+            watcher.EnableRaisingEvents = true;
+            Console.WriteLine($"Watching {watcher.Path}\\{watcher.Filter}");
+            
+            while (!queue.IsCompleted)
+            {
+                string filePath = queue.Take();
+                Debug.WriteLine($"Detected change {filePath}");
+               
+                long fileWriteTime = new FileInfo(filePath).LastWriteTimeUtc.Ticks;
+                if (fileWriteTime - lastWriteTime < writeInterval) continue;
+                lastWriteTime = fileWriteTime;
+
+                parser.DetectUnlockedAchievements(filePath);                
+            }
         }
     }
 }
