@@ -20,6 +20,9 @@ namespace AchievementNotifier.Parsers.Tenoke
         protected static String statsFilePattern = @"SteamData\user_stats.ini";
 
         protected String userStatsFile;
+        protected string processFileName;
+        protected string gameDirectory;
+
         protected Dictionary<String, Achievement> achievements= new Dictionary<String, Achievement>();
         private HashSet<string> notifiedAchievements = new HashSet<string>();
 
@@ -100,6 +103,7 @@ namespace AchievementNotifier.Parsers.Tenoke
                             if (!notifiedAchievements.Contains(achievement.id))
                             {
                                 CreateNotification(achievement);
+                                MainWindow.getInstance().UpdateAchievement(processFileName, achievement);
                             }
                             else
                             {

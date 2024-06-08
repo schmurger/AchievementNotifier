@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.Graphics;
 using WinRT.Interop;
 
@@ -54,6 +55,27 @@ namespace AchievementNotifier
             if (!string.IsNullOrEmpty(args.InvokedItemContainer.AccessKey)) { 
                 GameAchievements.Clear();
                 Storage.GetValueOrDefault(args.InvokedItemContainer.AccessKey).achievementItems.ForEach(GameAchievements.Add);
+            }
+        }
+
+        public void UpdateAchievement(String id, Achievement achievement)
+        {
+            if (!Storage.ContainsKey(id)) return;
+
+            AchievementItem achievementItem = Storage.GetValueOrDefault(id).achievementItems.Find(a => a.id == achievement.id);
+
+            if (achievement.progressMax > 0 && achievement.progressMin > 0)
+            {
+                achievementItem.percentage = (int)(achievement.progressMax / achievement.progressMin * 100);
+                achievementItem.percentageText = $"{achievementItem.percentage}%";
+                achievementItem.progress = $"{(int)achievement.progressMin}/{(int)achievement.progressMax}";
+                achievementItem.progressVisible = true;
+            }
+
+            if (achievement.achieved)
+            {
+                achievementItem.icon = achievement.icon;
+                achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
             }
         }
 

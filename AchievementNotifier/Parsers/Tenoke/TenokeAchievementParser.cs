@@ -14,8 +14,6 @@ namespace AchievementNotifier.Parsers.Tenoke
         private static string imagesZipFile = "icons.zip";
         private static string imagesDirectory = "icons";
 
-        private string processFileName;
-        private string gameDirectory;
         
         public TenokeAchievementParser(string processFileName, string gameDirectory, String configFile)
         {
@@ -53,6 +51,7 @@ namespace AchievementNotifier.Parsers.Tenoke
             foreach (Achievement achievement in achievements.Values)
             {
                 AchievementItem AchievementItem = new AchievementItem();
+                AchievementItem.id = achievement.id;
                 AchievementItem.icon = achievement.achieved ? achievement.icon : achievement.iconGray;
                 AchievementItem.name = achievement.name;
                 AchievementItem.description = achievement.description;
@@ -67,7 +66,7 @@ namespace AchievementNotifier.Parsers.Tenoke
 
                 if (achievement.achieved)
                 {
-                    AchievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString();
+                    AchievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
                 }
                 achievementList.Add(AchievementItem);   
             }

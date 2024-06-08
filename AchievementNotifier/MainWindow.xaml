@@ -51,11 +51,17 @@
                                     HorizontalAlignment="Center" 
                                     Source="{x:Bind icon}"/>
 
-                                <TextBlock Grid.Column="1" Margin="12,6,0,6" 
-                                   Text="{x:Bind name}" 
-                                   x:Phase="1"  
-                                   Style="{ThemeResource BaseTextBlockStyle}" />
-
+                                <RelativePanel  Grid.Column="1">
+                                    <TextBlock Margin="12,6,0,6"  x:Name="AchName"
+                                       Text="{x:Bind name}" 
+                                       x:Phase="1"  
+                                       Style="{ThemeResource BaseTextBlockStyle}" />
+                                    <TextBlock Margin="0,6,0,0"  x:Name="AchAt"
+                                       Text="{x:Bind achievedAt}" 
+                                       x:Phase="1"  
+                                       RelativePanel.AlignRightWithPanel="True"/>
+                                </RelativePanel>
+                                
                                 <TextBlock  Grid.Column="1" Margin="12,-11,0,6"
                                     Grid.Row="1"
                                     Text="{x:Bind description}" 
