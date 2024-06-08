@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AchievementNotifier (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AchievementNotifier (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
