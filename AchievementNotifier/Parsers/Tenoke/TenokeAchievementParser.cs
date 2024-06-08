@@ -70,7 +70,7 @@ namespace AchievementNotifier.Parsers.Tenoke
                 }
                 achievementList.Add(AchievementItem);   
             }
-
+            
             GameItem gameItem = getGameMenuItem();
             MainWindow.getInstance().Add(gameItem, achievementList);
         }

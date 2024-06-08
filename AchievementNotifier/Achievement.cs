@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.Identity.Core;
@@ -37,31 +38,49 @@ namespace AchievementNotifier
         }
     }
 
+    [DataContract]
     public class AchievementItem
     {
+        [DataMember]
         public String id;
+        [DataMember]
         public String name;
+        [DataMember]
         public String description;
+        [DataMember]
         public String icon;
+        [DataMember]
         public String achievedAt = "";
+        [DataMember]
         public Boolean progressVisible = false;
+        [DataMember]
         public String progress = "";
+        [DataMember]
         public int percentage = 0;
+        [DataMember]
         public String percentageText = "";
+        public AchievementItem() { }
     }
 
     public class GameItem
     {
+        [DataMember]
         public string id;
+        [DataMember]
         public string name;
+        [DataMember]
         public string icon;
+        public GameItem() { }
     }
 
+    [DataContract]
     public class GameView
     {
+        [DataMember]
         public GameItem gameItem;
+        [DataMember]
         public List<AchievementItem> achievementItems;
-
+        public GameView() { }
         public GameView(GameItem gameItem, List<AchievementItem> achievementItems)
         {
             this.gameItem = gameItem;

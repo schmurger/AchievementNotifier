@@ -3,10 +3,16 @@ using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 using Windows.Graphics;
 using WinRT.Interop;
 
@@ -27,13 +33,15 @@ namespace AchievementNotifier
         //public static Dictionary<String, ObservableCollection<AchievementList>> GameAchievements = new Dictionary<String, ObservableCollection<AchievementList>>(); 
         public ObservableCollection<AchievementItem> GameAchievements = new ObservableCollection<AchievementItem>();
         public ObservableCollection<GameItem> Games = new ObservableCollection<GameItem>();
-        public Dictionary<String, GameView> Storage = new Dictionary<String, GameView>(); 
-
+        public Dictionary<String, GameView> Storage = new Dictionary<String, GameView>();
+        private string storageFile = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AchievementNotifier", "achievements.dat");
+        
         public MainWindow()
         {
             this.InitializeComponent();
             Center();
             windowWatcher = new WindowWatcher();
+            LoadStorage();
             mainWindow = this;
         }
 
@@ -42,12 +50,43 @@ namespace AchievementNotifier
             return mainWindow;
         }
 
+        private void SaveStorage()
+        {
+            if (!File.Exists(storageFile))
+            {
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(storageFile));
+            }
+           
+            using (FileStream fs = File.Create(storageFile))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(Storage.GetType());
+                serializer.WriteObject(fs, Storage);
+            }
+        }
+
+        private void LoadStorage()
+        {
+            if (!File.Exists(storageFile)) return;
+
+            using (FileStream fs = new FileStream(storageFile, FileMode.Open))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(Storage.GetType());
+                Storage = (Dictionary<String, GameView>)serializer.ReadObject(fs);
+                foreach(KeyValuePair<String, GameView> game in Storage)
+                {
+                    Games.Add(game.Value.gameItem);
+                }
+                
+            }
+        }
+
         public void Add(GameItem gameItem, List<AchievementItem> achievementItems)
         {
             if (Storage.ContainsKey(gameItem.id)) return;
 
             Storage.Add(gameItem.id, new GameView(gameItem, achievementItems));
             Games.Add(gameItem);
+            SaveStorage();
         }
         
         private void GameNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -61,12 +100,6 @@ namespace AchievementNotifier
         public void UpdateAchievement(String id, Achievement achievement)
         {
             if (!Storage.ContainsKey(id)) return;
-
-            AchievementItem achievementItemInView = GameAchievements.FirstOrDefault(a => a.id == achievement.id);
-            if (achievementItemInView != null)
-            {
-                achievementItemInView.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
-            }
 
             AchievementItem achievementItem = Storage.GetValueOrDefault(id).achievementItems.FirstOrDefault(a => a.id == achievement.id);
 
@@ -85,8 +118,7 @@ namespace AchievementNotifier
                     achievementItem.icon = achievement.icon;
                     achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
                 }
-
-                
+                SaveStorage();
             }
         }
 
