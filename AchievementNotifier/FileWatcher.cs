@@ -28,7 +28,8 @@ namespace AchievementNotifier
             parser = AchievementParser;
             queue = new BlockingCollection<string>();   
 
-            String monitorFile = parser.GetStatsFile(); 
+            String monitorFile = parser.GetStatsFile();
+            FileOperations.CreateFolders(monitorFile);
             String watchDirectory = System.IO.Path.GetDirectoryName(monitorFile);
             String watchFile = System.IO.Path.GetFileName(monitorFile);
 

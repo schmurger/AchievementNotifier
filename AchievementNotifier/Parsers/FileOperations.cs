@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace AchievementNotifier.Parsers
 {
@@ -36,12 +38,41 @@ namespace AchievementNotifier.Parsers
             }
             return new string[] { };
         }
-
+       
         public static string findFile(String gameDirectory, String file)
         {
             return Directory.GetFiles(gameDirectory, file, SearchOption.AllDirectories).FirstOrDefault();
         }
+        public static void CreateFolders(String file)
+        {
+            if (!File.Exists(file))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(file));
+            }
+        }
+        public static void SerializeToFile(string storageFile, Dictionary<String, GameView> Storage)
+        {
+            CreateFolders(storageFile);
 
+            using (FileStream fs = File.Create(storageFile))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(Storage.GetType());
+                serializer.WriteObject(fs, Storage);
+            }
+        }
 
+        public static Dictionary<String, GameView> DeserializeFromFile(string storageFile)
+        {
+            Dictionary <String, GameView> Storage = new Dictionary<String, GameView >();
+            if (!File.Exists(storageFile)) return Storage;
+
+            using (FileStream fs = new FileStream(storageFile, FileMode.Open))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(Storage.GetType());
+                return (Dictionary<String, GameView>)serializer.ReadObject(fs);
+                
+
+            }
+        }
     }
 }

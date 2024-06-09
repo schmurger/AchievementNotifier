@@ -1,3 +1,4 @@
+using AchievementNotifier.Parsers;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
@@ -50,33 +51,12 @@ namespace AchievementNotifier
             return mainWindow;
         }
 
-        private void SaveStorage()
-        {
-            if (!File.Exists(storageFile))
-            {
-                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(storageFile));
-            }
-           
-            using (FileStream fs = File.Create(storageFile))
-            {
-                DataContractSerializer serializer = new DataContractSerializer(Storage.GetType());
-                serializer.WriteObject(fs, Storage);
-            }
-        }
-
         private void LoadStorage()
         {
-            if (!File.Exists(storageFile)) return;
-
-            using (FileStream fs = new FileStream(storageFile, FileMode.Open))
+            Storage = FileOperations.DeserializeFromFile(storageFile);
+            foreach (KeyValuePair<String, GameView> game in Storage)
             {
-                DataContractSerializer serializer = new DataContractSerializer(Storage.GetType());
-                Storage = (Dictionary<String, GameView>)serializer.ReadObject(fs);
-                foreach(KeyValuePair<String, GameView> game in Storage)
-                {
-                    Games.Add(game.Value.gameItem);
-                }
-                
+                Games.Add(game.Value.gameItem);
             }
         }
 
@@ -86,7 +66,7 @@ namespace AchievementNotifier
 
             Storage.Add(gameItem.id, new GameView(gameItem, achievementItems));
             Games.Add(gameItem);
-            SaveStorage();
+            FileOperations.SerializeToFile(storageFile, Storage);
         }
         
         private void GameNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -118,7 +98,7 @@ namespace AchievementNotifier
                     achievementItem.icon = achievement.icon;
                     achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
                 }
-                SaveStorage();
+                FileOperations.SerializeToFile(storageFile, Storage);
             }
         }
 
