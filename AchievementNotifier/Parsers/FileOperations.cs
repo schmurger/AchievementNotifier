@@ -12,7 +12,7 @@ namespace AchievementNotifier.Parsers
 {
     public class FileOperations
     {
-        public static string[] readContents(String fileName)
+        public static string[] readFile(String fileName)
         {
             if (File.Exists(fileName))
             {
@@ -42,6 +42,14 @@ namespace AchievementNotifier.Parsers
         public static string findFile(String gameDirectory, String file)
         {
             return Directory.GetFiles(gameDirectory, file, SearchOption.AllDirectories).FirstOrDefault();
+        }
+
+        public static void WriteToFile(List<String> lines, string file)
+        {
+            using (StreamWriter writetext = new StreamWriter(file))
+            {
+                lines.ForEach(line => { writetext.WriteLine(line); });
+            }
         }
         public static void CreateFolders(String file)
         {

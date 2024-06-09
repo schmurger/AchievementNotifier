@@ -18,10 +18,10 @@ namespace AchievementNotifier.Parsers
         NOT_FOUND = 99
     }
 
-    internal class EmuDetector
+    public class EmuDetector
     {
         public static String UE_GAME_STRING = "-Shipping";
-
+        private static EmuDetector emuDetector = new EmuDetector();
         private Dictionary<String, AchievementParser> detectedGames = new Dictionary<String, AchievementParser>();
         public static Dictionary<EMU_TYPE, String> configFiles = new Dictionary<EMU_TYPE, string>
         {
@@ -38,6 +38,16 @@ namespace AchievementNotifier.Parsers
             { EMU_TYPE.TENOKE, "user_stats.ini" },
             { EMU_TYPE.NOT_FOUND, "nofile" }
         };
+
+        private EmuDetector()
+        {
+            emuDetector = this;
+        }
+
+        public static EmuDetector getInstance()
+        {
+            return emuDetector;
+        }
 
         public AchievementParser DetectEmu(String fileName)
         {

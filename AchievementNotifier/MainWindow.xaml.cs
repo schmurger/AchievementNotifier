@@ -31,7 +31,6 @@ namespace AchievementNotifier
         private WindowWatcher windowWatcher;
         private static MainWindow mainWindow = null;
 
-        //public static Dictionary<String, ObservableCollection<AchievementList>> GameAchievements = new Dictionary<String, ObservableCollection<AchievementList>>(); 
         public ObservableCollection<AchievementItem> GameAchievements = new ObservableCollection<AchievementItem>();
         public ObservableCollection<GameItem> Games = new ObservableCollection<GameItem>();
         public Dictionary<String, GameView> Storage = new Dictionary<String, GameView>();
@@ -39,11 +38,12 @@ namespace AchievementNotifier
         
         public MainWindow()
         {
-            this.InitializeComponent();
-            Center();
-            windowWatcher = new WindowWatcher();
-            LoadStorage();
+            InitializeComponent();
             mainWindow = this;
+            windowWatcher = new WindowWatcher();
+            
+            Center();
+            LoadStorage();
         }
 
         public static MainWindow getInstance()
@@ -51,13 +51,17 @@ namespace AchievementNotifier
             return mainWindow;
         }
 
+        private void SaveStorage()
+        {
+            FileOperations.WriteToFile(Storage.Keys.ToList(), storageFile);
+        }
+
         private void LoadStorage()
         {
-            Storage = FileOperations.DeserializeFromFile(storageFile);
-            foreach (KeyValuePair<String, GameView> game in Storage)
+            foreach (string line in FileOperations.readFile(storageFile))
             {
-                Games.Add(game.Value.gameItem);
-            }
+                EmuDetector.getInstance().DetectEmu(line);
+            };
         }
 
         public void Add(GameItem gameItem, List<AchievementItem> achievementItems)
@@ -66,7 +70,7 @@ namespace AchievementNotifier
 
             Storage.Add(gameItem.id, new GameView(gameItem, achievementItems));
             Games.Add(gameItem);
-            FileOperations.SerializeToFile(storageFile, Storage);
+            SaveStorage();
         }
         
         private void GameNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

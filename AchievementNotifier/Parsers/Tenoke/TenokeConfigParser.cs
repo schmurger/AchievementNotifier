@@ -33,7 +33,7 @@ namespace AchievementNotifier.Parsers.Tenoke
         public void readConfigFile()
         {
             Console.WriteLine($"Start parsing {configFile}");
-            string[] lines = FileOperations.readContents(configFile);
+            string[] lines = FileOperations.readFile(configFile);
 
             Boolean idParseMode = false;
             Boolean nameParseMode = false;

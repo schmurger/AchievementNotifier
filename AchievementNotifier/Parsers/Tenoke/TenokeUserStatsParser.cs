@@ -35,7 +35,7 @@ namespace AchievementNotifier.Parsers.Tenoke
         {
             if (string.IsNullOrEmpty(userStatsFile)) return;
 
-            string[] lines = FileOperations.readContents(userStatsFile);
+            string[] lines = FileOperations.readFile(userStatsFile);
             foreach (string line in lines)
             {
                 readStatLine(line);
@@ -74,7 +74,7 @@ namespace AchievementNotifier.Parsers.Tenoke
         public override void DetectUnlockedAchievements(String fileName)
         {
             List<Achievement> unlockedAchievements = new List<Achievement>();
-            string[] lines = FileOperations.readContents(fileName);
+            string[] lines = FileOperations.readFile(fileName);
 
             foreach (string line in lines)
             {

@@ -13,13 +13,11 @@ namespace AchievementNotifier
     internal class WindowWatcher
     {
         private WinEventDelegate dele = null;
-        private EmuDetector emuDetector;
         private const uint WINEVENT_OUTOFCONTEXT = 0;
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
         public WindowWatcher()
         {
-            emuDetector = new EmuDetector();
             dele = new WinEventDelegate(WinEventProc);
             IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
         }
@@ -38,7 +36,7 @@ namespace AchievementNotifier
         public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
             uint pid = GetActiveWindowProcessId(hwnd);
-            emuDetector.checkProcessForEmu((int)pid);
+            EmuDetector.getInstance().checkProcessForEmu((int)pid);
         }
 
         private uint GetActiveWindowProcessId(IntPtr hwnd)
