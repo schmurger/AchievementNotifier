@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Drawing;
 using System.IO.Compression;
 using System.Collections.Generic;
 
@@ -40,7 +38,7 @@ namespace AchievementNotifier.Parsers.Tenoke
             gameItem.name = new DirectoryInfo(gameDirectory).Name;
             gameItem.icon = Path.Combine(extractedImagesDirectory, $"{gameItem.name}.png");
             
-            Icon.ExtractAssociatedIcon(processFileName).ToBitmap().Save(gameItem.icon, System.Drawing.Imaging.ImageFormat.Png);
+            //Icon.ExtractAssociatedIcon(processFileName).ToBitmap().Save(gameItem.icon, System.Drawing.Imaging.ImageFormat.Png);
             return gameItem;
         }
 

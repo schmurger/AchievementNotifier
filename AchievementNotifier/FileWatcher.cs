@@ -1,17 +1,8 @@
 ﻿using AchievementNotifier.Parsers;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AchievementNotifier
 {

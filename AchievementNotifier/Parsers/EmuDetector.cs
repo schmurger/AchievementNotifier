@@ -1,11 +1,7 @@
 ﻿using AchievementNotifier.Parsers.Tenoke;
-using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AchievementNotifier.Parsers

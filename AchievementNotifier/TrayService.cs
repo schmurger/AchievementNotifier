@@ -1,20 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Shapes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Windows.Foundation;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
-using Windows.UI.WindowManagement;
-
-namespace AchievementNotifier
+﻿namespace AchievementNotifier
 {
     public class TrayService
     {

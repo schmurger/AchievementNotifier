@@ -1,22 +1,13 @@
 using AchievementNotifier.Parsers;
-using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Serialization;
 using Windows.Graphics;
 using WinRT.Interop;
-
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -34,7 +25,7 @@ namespace AchievementNotifier
         public ObservableCollection<AchievementItem> GameAchievements = new ObservableCollection<AchievementItem>();
         public ObservableCollection<GameItem> Games = new ObservableCollection<GameItem>();
         public Dictionary<String, GameView> Storage = new Dictionary<String, GameView>();
-        private string storageFile = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AchievementNotifier", "achievements.dat");
+        private string storageFile =System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AchievementNotifier", "achievements.dat");
         
         public MainWindow()
         {
@@ -44,6 +35,9 @@ namespace AchievementNotifier
             
             Center();
             LoadStorage();
+
+            
+            
         }
 
         public static MainWindow getInstance()
@@ -53,7 +47,7 @@ namespace AchievementNotifier
 
         private void SaveStorage()
         {
-            FileOperations.WriteToFile(Storage.Keys.ToList(), storageFile);
+            FileOperations.WriteToFile(new List<String>(Storage.Keys), storageFile);
         }
 
         private void LoadStorage()
@@ -85,7 +79,7 @@ namespace AchievementNotifier
         {
             if (!Storage.ContainsKey(id)) return;
 
-            AchievementItem achievementItem = Storage.GetValueOrDefault(id).achievementItems.FirstOrDefault(a => a.id == achievement.id);
+            AchievementItem achievementItem = Storage.GetValueOrDefault(id).achievementItems.Find(a => a.id == achievement.id);
 
             if (achievementItem != null)
             {
@@ -102,7 +96,7 @@ namespace AchievementNotifier
                     achievementItem.icon = achievement.icon;
                     achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
                 }
-                FileOperations.SerializeToFile(storageFile, Storage);
+                SaveStorage();
             }
         }
 
@@ -116,7 +110,7 @@ namespace AchievementNotifier
             {
 
                 appWindow.Resize(new SizeInt32((int)(displayArea.WorkArea.Width * 0.3), (int)(displayArea.WorkArea.Height * 0.70)));
-
+                appWindow.Title = "Achievement Notifier";
                 PointInt32 CenteredPosition = appWindow.Position;
                 
                 CenteredPosition.X = (displayArea.WorkArea.Width - appWindow.Size.Width) / 2;
@@ -129,26 +123,6 @@ namespace AchievementNotifier
                 SetTitleBarColors(appWindow);
             }
         }
-
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            //myButton.Content = "Clicked";
-            //
-            string id = "Achievement_14130001";
-            string name = "Bancho Sushi is Back!";
-            string description = "Fixed the Sushi Restaurant.";
-            string uri = "F:\\Games\\Dave The Diver\\icons\\0b9ff64100024632b0bcecd6411f6d808ed10004.jpg";
-            new ToastContentBuilder()
-
-                 .AddText(name)
-                 .AddText(description)
-                 .AddAppLogoOverride(new Uri(uri))
-                 .AddAudio(new Uri("ms-appx:///Assets/notification.wav"))
-                 .Show();
-
-        }
-
-       
 
         private bool SetTitleBarColors(AppWindow appWindow)
         {
