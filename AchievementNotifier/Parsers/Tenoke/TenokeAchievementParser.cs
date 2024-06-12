@@ -18,8 +18,8 @@ namespace AchievementNotifier.Parsers.Tenoke
             this.processFileName = processFileName;
             this.gameDirectory = gameDirectory;
             this.configFile = configFile;
-            this.userStatsFile = Path.Combine(gameDirectory, statsFilePattern);
-            this.extractedImagesDirectory = Path.Combine(System.IO.Path.GetDirectoryName(configFile), imagesDirectory);
+            this.userStatsFile = buildStatsFilePath();
+            this.extractedImagesDirectory = Path.Combine(Path.GetDirectoryName(configFile), imagesDirectory);
 
             
             readConfigFile();
@@ -64,7 +64,7 @@ namespace AchievementNotifier.Parsers.Tenoke
 
                 if (achievement.achieved)
                 {
-                    AchievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
+                    AchievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 }
                 achievementList.Add(AchievementItem);   
             }

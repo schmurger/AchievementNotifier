@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -27,6 +28,11 @@ namespace AchievementNotifier.Parsers.Tenoke
         public override String GetStatsFile()
         {
             return userStatsFile;
+        }
+
+        protected string buildStatsFilePath()
+        {
+            return Path.Combine(Path.GetDirectoryName(processFileName), statsFilePattern);
         }
 
         public void readUserStatsFile()

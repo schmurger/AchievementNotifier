@@ -38,7 +38,18 @@ namespace AchievementNotifier
             LoadStorage();
         }
 
-        public static MainWindow getInstance()
+
+        private void TestNotificaton()
+        {
+            AchievementParser parser = new TenokeUserStatsParser();
+            Achievement achievement = new Achievement();
+            achievement.icon = "F:\\Games\\Dave The Diver\\icons\\02bdada9339c25640332b53188f1a6631fb515d2.jpg";
+            achievement.name = "Test";
+            achievement.description = "Description";
+            parser.CreateNotification(achievement);
+
+        }
+            public static MainWindow getInstance()
         {
             return mainWindow;
         }
@@ -92,7 +103,7 @@ namespace AchievementNotifier
                 if (achievement.achieved)
                 {
                     achievementItem.icon = achievement.icon;
-                    achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToString("yyyy-mm-dd HH:mm:ss");
+                    achievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 }
                 SaveStorage();
             }
