@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>AchievementNotifier</RootNamespace>
@@ -19,7 +19,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\trophy.ico</ApplicationIcon>
     <PublishAot>False</PublishAot>
-    <WindowsPackageType>MSIX</WindowsPackageType>
+    <WindowsPackageType>None</WindowsPackageType>
     <PackageCertificateThumbprint>2DB067157F28887792580C587E5FD842377CC394</PackageCertificateThumbprint>
     <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
   </PropertyGroup>

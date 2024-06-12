@@ -8,8 +8,8 @@ namespace AchievementNotifier.Parsers
 
     public abstract class AchievementParser
     {
-        private static string NOTIFICATION_XML = 
-            @"<toast>
+        private static string NOTIFICATION_XML =
+            @"<toast launch='conversationId=9813'>
                 <visual>
                     <binding template='ToastImageAndText02'>
                         <image id='1' src='{0}'/>
@@ -17,6 +17,7 @@ namespace AchievementNotifier.Parsers
                         <text id='2'>{2}</text>
                     </binding>
                 </visual>
+                <audio src='ms-winsoundevent:Notification.SMS'/>
             </toast>";
        
 
@@ -28,11 +29,10 @@ namespace AchievementNotifier.Parsers
         public void CreateNotification(Achievement achievement)
         {
             Console.WriteLine($"Unlocked {achievement.name}");
-    
             XmlDocument tileXml = new XmlDocument();
             tileXml.LoadXml(string.Format(NOTIFICATION_XML, new string[] { achievement.icon, achievement.name, achievement.description }));
             var toast = new ToastNotification(tileXml);
-            ToastNotificationManager.CreateToastNotifier("Achievement Unlocked!").Show(toast);
+            ToastNotificationManager.CreateToastNotifier("AchievementNotifier").Show(toast);
         }
     }
 }

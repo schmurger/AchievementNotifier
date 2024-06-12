@@ -1,4 +1,5 @@
 using AchievementNotifier.Parsers;
+using AchievementNotifier.Parsers.Tenoke;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -35,9 +36,6 @@ namespace AchievementNotifier
             
             Center();
             LoadStorage();
-
-            
-            
         }
 
         public static MainWindow getInstance()
