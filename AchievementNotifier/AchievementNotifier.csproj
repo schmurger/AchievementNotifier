@@ -3,91 +3,27 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+	<SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
     <RootNamespace>AchievementNotifier</RootNamespace>
     <Platforms>x86;x64;ARM64</Platforms>
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Never</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\trophy.ico</ApplicationIcon>
     <PublishAot>False</PublishAot>
     <WindowsPackageType>None</WindowsPackageType>
-    <PackageCertificateThumbprint>2DB067157F28887792580C587E5FD842377CC394</PackageCertificateThumbprint>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+
+	<Version>1.0.1</Version>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Remove="Assets\dave.jpg" />
-    <Content Remove="Assets\LargeTile.scale-100.png" />
-    <Content Remove="Assets\LargeTile.scale-125.png" />
-    <Content Remove="Assets\LargeTile.scale-150.png" />
-    <Content Remove="Assets\LargeTile.scale-200.png" />
-    <Content Remove="Assets\LargeTile.scale-400.png" />
-    <Content Remove="Assets\SmallTile.scale-100.png" />
-    <Content Remove="Assets\SmallTile.scale-125.png" />
-    <Content Remove="Assets\SmallTile.scale-150.png" />
-    <Content Remove="Assets\SmallTile.scale-200.png" />
-    <Content Remove="Assets\SmallTile.scale-400.png" />
-    <Content Remove="Assets\SplashScreen.scale-100.png" />
-    <Content Remove="Assets\SplashScreen.scale-125.png" />
-    <Content Remove="Assets\SplashScreen.scale-150.png" />
-    <Content Remove="Assets\SplashScreen.scale-400.png" />
-    <Content Remove="Assets\Square150x150Logo.scale-100.png" />
-    <Content Remove="Assets\Square150x150Logo.scale-125.png" />
-    <Content Remove="Assets\Square150x150Logo.scale-150.png" />
-    <Content Remove="Assets\Square150x150Logo.scale-400.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-16.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-256.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-32.png" />
-    <Content Remove="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
-    <Content Remove="Assets\Square44x44Logo.scale-100.png" />
-    <Content Remove="Assets\Square44x44Logo.scale-125.png" />
-    <Content Remove="Assets\Square44x44Logo.scale-150.png" />
-    <Content Remove="Assets\Square44x44Logo.scale-400.png" />
-    <Content Remove="Assets\Square44x44Logo.targetsize-16.png" />
-    <Content Remove="Assets\Square44x44Logo.targetsize-24.png" />
-    <Content Remove="Assets\Square44x44Logo.targetsize-256.png" />
-    <Content Remove="Assets\Square44x44Logo.targetsize-32.png" />
-    <Content Remove="Assets\Square44x44Logo.targetsize-48.png" />
-    <Content Remove="Assets\StoreLogo.scale-100.png" />
-    <Content Remove="Assets\StoreLogo.scale-125.png" />
-    <Content Remove="Assets\StoreLogo.scale-150.png" />
-    <Content Remove="Assets\StoreLogo.scale-200.png" />
-    <Content Remove="Assets\StoreLogo.scale-400.png" />
-    <Content Remove="Assets\Wide310x150Logo.scale-100.png" />
-    <Content Remove="Assets\Wide310x150Logo.scale-125.png" />
-    <Content Remove="Assets\Wide310x150Logo.scale-150.png" />
-    <Content Remove="Assets\Wide310x150Logo.scale-400.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Assets\Square44x44Logo.targetsize-16_altform-lightunplated.png" />
-    <None Remove="Assets\Square44x44Logo.targetsize-16_altform-unplated.png" />
-    <None Remove="Assets\Square44x44Logo.targetsize-32_altform-lightunplated.png" />
-    <None Remove="Assets\Square44x44Logo.targetsize-32_altform-unplated.png" />
-    <None Remove="Assets\Square44x44Logo.targetsize-48_altform-lightunplated.png" />
-    <None Remove="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
-  </ItemGroup>
-
-
-
+  
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
 

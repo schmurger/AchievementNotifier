@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.Graphics;
 using WinRT.Interop;
+using System.Diagnostics;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -27,15 +28,17 @@ namespace AchievementNotifier
         public ObservableCollection<GameItem> Games = new ObservableCollection<GameItem>();
         public Dictionary<String, GameView> Storage = new Dictionary<String, GameView>();
         private string storageFile =System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AchievementNotifier", "achievements.dat");
-        
+
         public MainWindow()
         {
             InitializeComponent();
             mainWindow = this;
             windowWatcher = new WindowWatcher();
-            
+
             Center();
             LoadStorage();
+
+           
         }
 
 
@@ -117,7 +120,7 @@ namespace AchievementNotifier
             if (AppWindow.GetFromWindowId(windowId) is AppWindow appWindow &&
                 DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Nearest) is DisplayArea displayArea)
             {
-
+                SetTitleBarColors(appWindow);
                 appWindow.Resize(new SizeInt32((int)(displayArea.WorkArea.Width * 0.3), (int)(displayArea.WorkArea.Height * 0.70)));
                 appWindow.Title = "Achievement Notifier";
                 PointInt32 CenteredPosition = appWindow.Position;
@@ -129,8 +132,9 @@ namespace AchievementNotifier
                 appWindow.Move(CenteredPosition);
         
 
-                SetTitleBarColors(appWindow);
+                
             }
+
         }
 
         private bool SetTitleBarColors(AppWindow appWindow)
