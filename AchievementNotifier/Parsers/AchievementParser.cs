@@ -63,8 +63,8 @@ namespace AchievementNotifier.Parsers
 
                 if (achievement.progressMax > 0 && achievement.progressMin > 0)
                 {
-                    AchievementItem.percentage = calculatePercentage(achievement);
-                    AchievementItem.percentageText = $"{calculatePercentageText(achievement)}%";
+                    AchievementItem.percentage = (int)(achievement.progressMin / achievement.progressMax * 100);
+                    AchievementItem.percentageText = $"{AchievementItem.percentage}%";
                     AchievementItem.progress = $"{(int)achievement.progressMin}/{(int)achievement.progressMax}";
                     AchievementItem.progressVisible = true;
                 }
@@ -78,22 +78,6 @@ namespace AchievementNotifier.Parsers
 
             GameItem gameItem = getGameMenuItem();
             MainWindow.getInstance().Add(gameItem, achievementList);
-        }
-
-        private int calculatePercentageText(Achievement achievement)
-        {
-            if(achievement.progressMin > achievement.progressMax)
-            {
-                return (int)(achievement.progressMin / achievement.progressMax * 100);
-            }
-            
-            return (int)(achievement.progressMax / achievement.progressMin * 100);
-        }
-
-        private int calculatePercentage(Achievement achievement)
-        {
-            if (achievement.progressMin > achievement.progressMax) return 100;
-            return (int)(achievement.progressMax / achievement.progressMin * 100);
         }
 
         private GameItem getGameMenuItem()
