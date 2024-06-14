@@ -49,7 +49,7 @@ namespace AchievementNotifier.Parsers.Goldberg
         protected string getAppDataFolder()
         {
             foreach( string folder in GOLDBER_FOLDERS){
-                string appDataFolder = $"{APP_DATA}\\{folder}";
+                string appDataFolder = $"{APP_DATA}\\{folder}\\{gameId}";
                 if (Directory.Exists(appDataFolder)){
                     return appDataFolder;
                 }
