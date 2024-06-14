@@ -1,4 +1,5 @@
-﻿using AchievementNotifier.Parsers.Tenoke;
+﻿using AchievementNotifier.Parsers.Goldberg;
+using AchievementNotifier.Parsers.Tenoke;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,17 +22,8 @@ namespace AchievementNotifier.Parsers
         private Dictionary<String, AchievementParser> detectedGames = new Dictionary<String, AchievementParser>();
         public static Dictionary<EMU_TYPE, String> configFiles = new Dictionary<EMU_TYPE, string>
         {
-            { EMU_TYPE.GOLDBERG ,"steam_appid.txt" },
-            { EMU_TYPE.GSE , "configs.app.ini"},
+            { EMU_TYPE.GOLDBERG ,"achievements.json" },
             { EMU_TYPE.TENOKE, "tenoke.ini" },
-            { EMU_TYPE.NOT_FOUND, "nofile" }
-        };
-
-        public static Dictionary<EMU_TYPE, String> userStatsFiles = new Dictionary<EMU_TYPE, string>
-        {
-            { EMU_TYPE.GOLDBERG ,"steam_appid.txt" },
-            { EMU_TYPE.GSE , "configs.app.ini"},
-            { EMU_TYPE.TENOKE, "user_stats.ini" },
             { EMU_TYPE.NOT_FOUND, "nofile" }
         };
 
@@ -63,7 +55,7 @@ namespace AchievementNotifier.Parsers
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine($"Couldn't find emu for {gameDirectory}");
+                    Debug.WriteLine($"Couldn't find emu for {fileName}, ex={e.GetBaseException().Message}");
                 }
             }
 
@@ -95,6 +87,8 @@ namespace AchievementNotifier.Parsers
             {
                 case EMU_TYPE.TENOKE:
                     return new TenokeAchievementParser(processFileName, gameDirectory, configFile);
+                case EMU_TYPE.GOLDBERG:
+                    return new GoldbergAchievementParser(processFileName, gameDirectory, configFile);
                 default:
                     return null;
             }

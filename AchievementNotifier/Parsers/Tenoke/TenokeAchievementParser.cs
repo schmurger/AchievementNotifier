@@ -30,48 +30,7 @@ namespace AchievementNotifier.Parsers.Tenoke
             Debug.WriteLine("Initialized TenokeAchievementParser");
         }
 
-        private GameItem getGameMenuItem()
-        {
-            GameItem gameItem = new GameItem();
-
-            gameItem.id = processFileName;
-            gameItem.name = new DirectoryInfo(gameDirectory).Name;
-            gameItem.icon = Path.Combine(extractedImagesDirectory, $"{gameItem.name}.png");
-            
-            //Icon.ExtractAssociatedIcon(processFileName).ToBitmap().Save(gameItem.icon, System.Drawing.Imaging.ImageFormat.Png);
-            return gameItem;
-        }
-
-        private void populateAchievementsView()
-        {
-
-            List<AchievementItem> achievementList = new List<AchievementItem>();
-            foreach (Achievement achievement in achievements.Values)
-            {
-                AchievementItem AchievementItem = new AchievementItem();
-                AchievementItem.id = achievement.id;
-                AchievementItem.icon = achievement.achieved ? achievement.icon : achievement.iconGray;
-                AchievementItem.name = achievement.name;
-                AchievementItem.description = achievement.description;
-
-                if (achievement.progressMax > 0 && achievement.progressMin > 0)
-                {
-                    AchievementItem.percentage = (int)(achievement.progressMax / achievement.progressMin * 100);
-                    AchievementItem.percentageText = $"{AchievementItem.percentage}%";
-                    AchievementItem.progress = $"{(int)achievement.progressMin}/{(int)achievement.progressMax}";
-                    AchievementItem.progressVisible = true;
-                }
-
-                if (achievement.achieved)
-                {
-                    AchievementItem.achievedAt = DateTimeOffset.FromUnixTimeSeconds(achievement.timestamp).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
-                }
-                achievementList.Add(AchievementItem);   
-            }
-            
-            GameItem gameItem = getGameMenuItem();
-            MainWindow.getInstance().Add(gameItem, achievementList);
-        }
+        
 
         
 

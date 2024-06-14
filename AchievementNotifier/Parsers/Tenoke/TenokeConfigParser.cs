@@ -12,8 +12,7 @@ namespace AchievementNotifier.Parsers.Tenoke
         private static Regex englishPattern = new Regex(@"english\s+=\s+""(.*)""");
 
         private static Dictionary<String, Regex> configFilePatterns;
-        protected string extractedImagesDirectory;
-        protected string configFile;
+        
 
         static TenokeConfigParser()
         {

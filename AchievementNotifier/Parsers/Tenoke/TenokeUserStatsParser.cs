@@ -18,13 +18,6 @@ namespace AchievementNotifier.Parsers.Tenoke
         private static int unlockTimeSecondsTolerance = 5;
         protected static String statsFilePattern = @"SteamData\user_stats.ini";
 
-        protected String userStatsFile;
-        protected string processFileName;
-        protected string gameDirectory;
-
-        protected Dictionary<String, Achievement> achievements= new Dictionary<String, Achievement>();
-        private HashSet<string> notifiedAchievements = new HashSet<string>();
-
         public override String GetStatsFile()
         {
             return userStatsFile;
@@ -84,7 +77,6 @@ namespace AchievementNotifier.Parsers.Tenoke
             {
                 Debug.WriteLine($"Checking stats line {line}");
                 Match match = achievementStatLine.Match(line);
-                long timeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
 
                 if (match.Success)
                 {
@@ -95,7 +87,7 @@ namespace AchievementNotifier.Parsers.Tenoke
                         bool.TryParse(match.Groups[2].Value, out unlocked);
                         long achievedTime;
                         long.TryParse(match.Groups[3].Value, out achievedTime);
-                        long diffTime = Math.Abs(timeNow - achievedTime);
+                        long diffTime = Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - achievedTime);
 
                         Debug.WriteLine($"{id}, Unlocked = {unlocked}, diffTime = {diffTime}");
                         if (unlocked && diffTime < unlockTimeSecondsTolerance)

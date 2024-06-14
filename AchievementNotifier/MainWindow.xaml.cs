@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using Windows.Graphics;
 using WinRT.Interop;
 using System.Diagnostics;
+using AchievementNotifier.Parsers.Goldberg;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -38,7 +39,7 @@ namespace AchievementNotifier
             Center();
             LoadStorage();
 
-           
+          
         }
 
 
