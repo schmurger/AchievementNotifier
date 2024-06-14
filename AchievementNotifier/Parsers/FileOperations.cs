@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -32,6 +33,7 @@ namespace AchievementNotifier.Parsers
             }
             catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 return (T)Activator.CreateInstance(typeof(T));
             }
         }
@@ -77,8 +79,16 @@ namespace AchievementNotifier.Parsers
         {
             string[] files = Directory.GetFiles(gameDirectory, file, SearchOption.AllDirectories);
             if (files.Length == 0) return null;
-
+            
             return files[0];
+        }
+
+        public static string findDirectory(String directory, String search)
+        {
+            string[] directories = Directory.GetDirectories(directory, search, SearchOption.AllDirectories);
+            if (directories.Length == 0) return "";
+
+            return directories[0];
         }
 
         public static void WriteToFile(List<String> lines, string file)

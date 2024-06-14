@@ -27,7 +27,10 @@ namespace AchievementNotifier.Parsers.Goldberg
 
         public void readStatsFile()
         {
-            steamUserProgress = FileOperations.Read<Dictionary<string, SteamUserProgress>>(userStatsFile);
+            if (File.Exists(userStatsFile))
+            { 
+                steamUserProgress = FileOperations.Read<Dictionary<string, SteamUserProgress>>(userStatsFile);
+            }
         }
 
         public string GetAchievementStatsFile(SteamAchievement steamAchievement)

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace AchievementNotifier.Parsers.Goldberg
 {
     internal class GoldbergConfigParser : GoldbergUserStatsParser
     {
-
 
         protected void readConfigFile()
         {
@@ -22,8 +22,8 @@ namespace AchievementNotifier.Parsers.Goldberg
             {
                 Achievement achievement = new Achievement();
                 achievement.id = steamAchievement.name;
-                achievement.name = steamAchievement.displayName.GetValueOrDefault("english");
-                achievement.description = steamAchievement.description.GetValueOrDefault("english");
+                achievement.name = getDisplayName(steamAchievement);
+                achievement.description = getDescription(steamAchievement);
                 achievement.icon = Path.Combine(extractedImagesDirectory, steamAchievement.icon);
                 achievement.iconGray = Path.Combine(extractedImagesDirectory, steamAchievement.icon_gray);
 
@@ -45,6 +45,29 @@ namespace AchievementNotifier.Parsers.Goldberg
             }
         }
 
-       
+       private string getDisplayName(SteamAchievement steamAchievement)
+        {
+            if (steamAchievement.displayName.ValueKind.ToString() == "String")
+            {
+                return steamAchievement.displayName.ToString();
+
+            }
+            else {
+                return (JsonSerializer.Deserialize<Dictionary<string, string>>(steamAchievement.displayName.ToString())).GetValueOrDefault("english");
+
+            }
+           
+        }
+
+        private string getDescription(SteamAchievement steamAchievement)
+        {
+            if (steamAchievement.description.ValueKind.ToString() == "String")
+            {
+                return steamAchievement.description.ToString();
+            }
+            else {
+                return (JsonSerializer.Deserialize<Dictionary<string, string>>(steamAchievement.description.ToString())).GetValueOrDefault("english");
+            }
+        }
     }
 }

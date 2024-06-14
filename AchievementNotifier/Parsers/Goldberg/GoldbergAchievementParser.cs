@@ -13,13 +13,12 @@ namespace AchievementNotifier.Parsers.Goldberg
         private static string imagesDirectory = "img";
         private static string appIdFile = "steam_appid.txt";
         private static string steamSettings = "steam_settings";
-        private static string GSE_FOLDER = "GSE Saves";
-        private static string GOLDBERG_FOLDER = "Goldberg SteamEmu Saves";
-        
+        private static string APP_DATA = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        private static string[] GOLDBER_FOLDERS = new string[] { "Goldberg SteamEmu Saves", "GSE Saves" };
         private string gameId;
         private string appIdFilePath;
 
-        public GoldbergAchievementParser(string processFileName, string gameDirectory, String configFile)
+        public GoldbergAchievementParser(string processFileName, string gameDirectory, string configFile)
         {
 
             this.processFileName = processFileName;
@@ -27,7 +26,7 @@ namespace AchievementNotifier.Parsers.Goldberg
             this.configFile = configFile;
             this.appIdFilePath = getAppIdFilePath();
             this.gameId = readAppId();
-            this.userStatsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), getEmuFolder(), gameId);
+            this.userStatsFolder = getAppDataFolder();
             this.userStatsFile = Path.Combine(userStatsFolder, "achievements.json");
             this.extractedImagesDirectory = Path.GetDirectoryName(configFile);
 
@@ -43,15 +42,19 @@ namespace AchievementNotifier.Parsers.Goldberg
 
         protected string getAppIdFilePath()
         {
+           
             return FileOperations.findFile(gameDirectory, appIdFile);
         }
-        protected string getEmuFolder()
+
+        protected string getAppDataFolder()
         {
-            if (appIdFilePath.Contains(steamSettings))
-            {
-                return GSE_FOLDER;
+            foreach( string folder in GOLDBER_FOLDERS){
+                string appDataFolder = $"{APP_DATA}\\{folder}";
+                if (Directory.Exists(appDataFolder)){
+                    return appDataFolder;
+                }
             }
-            return GOLDBERG_FOLDER;
+            return "";
         }
     }
 }
