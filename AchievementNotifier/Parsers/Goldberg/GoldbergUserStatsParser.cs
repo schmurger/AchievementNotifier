@@ -48,7 +48,9 @@ namespace AchievementNotifier.Parsers.Goldberg
             foreach (KeyValuePair<string, SteamUserProgress> progress in steamUserProgress)
             {
                 bool unlocked = progress.Value.earned;
-                long diffTime = Math.Abs(DateTimeOffset.Now.ToUnixTimeSeconds() - progress.Value.earned_time);
+                long unixTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                long diffTime = Math.Abs(unixTime - progress.Value.earned_time);
+                Debug.WriteLine($"Checking achievement {progress.Key}, unixTime={unixTime}, earnedTime={progress.Value.earned_time}, diff={diffTime}, unlocked={unlocked}");
 
                 if (unlocked && diffTime < unlockTimeSecondsTolerance)
                 {

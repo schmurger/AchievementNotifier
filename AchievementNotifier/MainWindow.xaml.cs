@@ -65,6 +65,7 @@ namespace AchievementNotifier
 
         private void LoadStorage()
         {
+            FileOperations.CreateFolders(storageFile);
             foreach (string line in FileOperations.readFile(storageFile))
             {
                 EmuDetector.getInstance().DetectEmu(line);

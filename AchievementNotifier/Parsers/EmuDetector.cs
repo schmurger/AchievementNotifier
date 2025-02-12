@@ -50,7 +50,6 @@ namespace AchievementNotifier.Parsers
                     if (!string.IsNullOrEmpty(configFile))
                     {
                         return initParser(entry.Key, fileName, gameDirectory, configFile);
-                        
                     }
                 }
                 catch (Exception e)
@@ -113,6 +112,28 @@ namespace AchievementNotifier.Parsers
             }
             catch (Exception e) {
                 Console.WriteLine($"Couldn't find emu for {pid}");
+            }
+        }
+
+        public void checkFileForEmu(string processFileName)
+        {
+            try
+            {
+                Console.WriteLine($"Checking process {processFileName}");
+
+                if (processFileName != null && !detectedGames.ContainsKey(processFileName))
+                {
+                    AchievementParser parser = DetectEmu(processFileName);
+                    if (parser != null)
+                    {
+                        detectedGames.Add(processFileName, parser);
+                        Task.Run(() => new FileWatcher(parser).Start());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Couldn't find emu file {processFileName}");
             }
         }
     }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using Microsoft.UI.Xaml.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace AchievementNotifier.Parsers
@@ -22,6 +24,15 @@ namespace AchievementNotifier.Parsers
                 return fileContents.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             }
             return new string[] { };
+        }
+
+        public static void WriteJson<T>(String filename, T obj)
+        {
+            using (FileStream fileStream = File.Create(filename))
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
+                serializer.WriteObject(fileStream, obj);
+            } 
         }
 
         public static T Read<T>(string fileName)
@@ -52,7 +63,6 @@ namespace AchievementNotifier.Parsers
 
         public static string readString(String fileName)
         {
-            if (!File.Exists(fileName)) return null;
             int retries = 0;
             while (retries < RETRIES)
             {
@@ -102,7 +112,7 @@ namespace AchievementNotifier.Parsers
         {
             if (!File.Exists(file))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(file));
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(file));
             }
         }
     }

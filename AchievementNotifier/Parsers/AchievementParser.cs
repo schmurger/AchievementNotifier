@@ -23,6 +23,7 @@ namespace AchievementNotifier.Parsers
         protected string configFile;
         protected Dictionary<String, Achievement> achievements = new Dictionary<String, Achievement>();
         protected HashSet<string> notifiedAchievements = new HashSet<string>();
+        private string localAppData = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AchievementNotifier");
 
         private static string NOTIFICATION_SOUND = $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}\\Assets\\notification.wav";
         private static string NOTIFICATION_XML =
@@ -87,8 +88,10 @@ namespace AchievementNotifier.Parsers
                 achievementList.Add(AchievementItem);
             }
 
+            
             GameItem gameItem = getGameMenuItem();
             MainWindow.getInstance().Add(gameItem, achievementList);
+            FileOperations.WriteJson(System.IO.Path.Combine(localAppData, gameItem.name), achievementList);
         }
 
         private GameItem getGameMenuItem()

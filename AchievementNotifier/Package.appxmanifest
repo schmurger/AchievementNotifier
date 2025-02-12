@@ -50,6 +50,7 @@
   </Applications>
 
   <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
+	  <rescap:Capability Name="appDiagnostics"/>
+	  <rescap:Capability Name="runFullTrust" />
   </Capabilities>
 </Package>
